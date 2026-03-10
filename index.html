@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Someone Special ❤️</title>
+    <style>
+        /* 1. Background & Layout */
+        body {
+            margin: 0;
+            padding: 0;
+            background: #0a0a12; /* Deep Dark Space Color */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: 'Georgia', serif;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        /* 2. Stars Animation */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        /* 3. Text Styling */
+        #container {
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+            z-index: 10;
+        }
+
+        .line {
+            font-size: 22px;
+            font-style: italic;
+            opacity: 0;
+            filter: blur(10px);
+            transition: all 2.5s ease;
+            position: absolute;
+            width: 100%;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            line-height: 1.6;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .line.active {
+            opacity: 1;
+            filter: blur(0);
+        }
+
+        /* Initial Hint */
+        #hint {
+            position: absolute;
+            bottom: 20px;
+            font-size: 14px;
+            color: #888;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgMusic" loop>
+        <source src="music.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="container">
+        <div class="line" id="l1">Aaj ka din mere liye bhi utna hi special hai...</div>
+        <div class="line" id="l2">Kyunki aaj tum is duniya mein aayi thi. ❤️</div>
+        <div class="line" id="l3">Dooriyan raaste mein hain, par dil se hum saath hain.</div>
+        <div class="line" id="l4">Coding ki duniya mein tum mera sabse pyaara 'logic' ho.</div>
+        <div class="line" id="l5">Happy Birthday! Hamesha aise hi muskuraati rehna. ✨</div>
+    </div>
+
+    <div id="hint">TAP ANYWHERE ON SCREEN</div>
+
+    <script>
+        const lines = document.querySelectorAll('.line');
+        const hint = document.getElementById('hint');
+        let current = 0;
+        let started = false;
+
+        // Click karne par music aur animation start hoga
+        window.onclick = function() {
+            if (!started) {
+                started = true;
+                hint.style.display = 'none';
+                
+                let music = document.getElementById('bgMusic');
+                music.volume = 0.4; // Low Volume
+                music.play().catch(e => console.log("Music play error:", e));
+                
+                showLines();
+            }
+        };
+
+        function showLines() {
+            if (current < lines.length) {
+                // Purani line hide karo
+                if (current > 0) {
+                    lines[current-1].classList.remove('active');
+                    lines[current-1].style.opacity = "0";
+                }
+                
+                // Nayi line show karo
+                lines[current].classList.add('active');
+                current++;
+                
+                // 4 seconds ka gap har line ke beech
+                setTimeout(showLines, 4500); 
+            } else {
+                // Last line par ruk jayega ya repeat kar sakte ho
+                lines[lines.length-1].style.textShadow = "0 0 20px #ff69b4";
+            }
+        }
+
+        // Stars generator (Background decoration)
+        for (let i = 0; i < 120; i++) {
+            let star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = Math.random() * 2 + 'px';
+            star.style.height = star.style.width;
+            star.style.left = Math.random() * 100 + 'vw';
+            star.style.top = Math.random() * 100 + 'vh';
+            star.style.animationDelay = Math.random() * 5 + 's';
+            document.body.appendChild(star);
+        }
+    </script>
+</body>
+</html>
